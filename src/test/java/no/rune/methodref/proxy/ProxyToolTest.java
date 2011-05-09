@@ -1,8 +1,12 @@
 package no.rune.methodref.proxy;
 
 import static no.rune.methodref.proxy.ProxyFactory.proxy;
+import static org.hamcrest.Matchers.emptyArray;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.any;
+import static org.mockito.Mockito.eq;
+import static org.mockito.Mockito.argThat;
 
 import java.io.IOException;
 import java.io.StringReader;
@@ -32,6 +36,7 @@ public class ProxyToolTest {
     public void createsProxiesWithCallback() throws Throwable {
         StringReader reader = proxy(StringReader.class, methodInterceptor);
         reader.read();
-        verify(methodInterceptor).intercept(any(Object.class), any(Method.class), any(Object[].class), any(MethodProxy.class));
+        Method readMethod = StringReader.class.getMethod("read");
+        verify(methodInterceptor, times(1)).intercept(any(Object.class), eq(readMethod), argThat(emptyArray()), any(MethodProxy.class));
     }
 }
