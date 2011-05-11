@@ -2,21 +2,12 @@ package no.rune.methodref;
 
 import static no.rune.methodref.proxy.ProxyFactory.proxy;
 
-import java.io.Serializable;
 import java.lang.reflect.Method;
 import no.rune.methodref.exception.MustRegisterMethodFirst;
 
-public class MethodRef implements InvocationRegistry, Serializable {
+public class MethodRef implements InvocationRegistry {
 
     private static final ThreadLocal<MethodRef> METHODREF = new ThreadLocal<MethodRef>();
-
-    private String name;
-    private Object[] arguments;
-    private Class<?> targetType;
-    private Class<?> returnType;
-    private MethodRef nextInChain;
-
-    private MethodRef() {}
 
     public static <T> T on(Class<T> type) {
         MethodRef methodRef = new MethodRef();
@@ -33,6 +24,16 @@ public class MethodRef implements InvocationRegistry, Serializable {
         throw new MustRegisterMethodFirst();
     }
 
+
+    private String name;
+    private Object[] arguments;
+    private Class<?> targetType;
+    private Class<?> returnType;
+    private MethodRef nextInChain;
+
+    private MethodRef() {}
+
+
     @Override
     public void register(Method method, Object[] args) {
         MethodRef methodRef = this;
@@ -43,7 +44,6 @@ public class MethodRef implements InvocationRegistry, Serializable {
         methodRef.targetType = method.getDeclaringClass();
         methodRef.nextInChain = new MethodRef();
     }
-
 
 
     public String getName() {
