@@ -6,9 +6,10 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
 
+import java.io.Reader;
+
 import org.junit.Test;
 
-import com.sun.tools.hat.internal.parser.Reader;
 
 
 public class DefaultsTest {
