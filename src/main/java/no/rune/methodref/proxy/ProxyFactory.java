@@ -12,7 +12,7 @@ import org.objenesis.ObjenesisHelper;
 public class ProxyFactory {
 
     public static <T> T proxy(Class<T> type, Callback callback) {
-        callback = callback != null? callback : NICE_NO_OP;
+        callback = callback != null? callback : BLOCKER;
 
         Enhancer enhancer = new Enhancer();
         enhancer.setSuperclass(type);
@@ -27,10 +27,10 @@ public class ProxyFactory {
         return proxy;
     }
 
-    private static final Callback NICE_NO_OP = new MethodInterceptor() {
+    private static final Callback BLOCKER = new MethodInterceptor() {
         @Override
         public Object intercept(Object obj, Method method, Object[] args, MethodProxy proxy) {
-            return Defaults.nullValueFor(method.getReturnType());
+            return null;
         }
     };
 
